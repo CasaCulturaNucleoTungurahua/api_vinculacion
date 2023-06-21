@@ -1,5 +1,6 @@
 package com.casaculturatungurahua.api.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,6 +19,7 @@ public class Author {
     private String fullName;
     private String address;
     private String bibliography;
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Artwork> artworks;
 }
