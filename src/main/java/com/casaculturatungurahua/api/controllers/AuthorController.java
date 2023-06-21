@@ -48,8 +48,8 @@ public class AuthorController {
         return ResponseEntity.ok(authorService.findAll());
     }
 
-    @GetMapping
-    public ResponseEntity<Author> findById(Long id){
+    @GetMapping(value = "{id}")
+    public ResponseEntity<Author> findById(@PathVariable Long id){
         return ResponseEntity.ok(authorService.findById(id));
     }
 

@@ -16,6 +16,7 @@ public class Author {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column (unique = true)
     private String fullName;
     private String address;
     private String bibliography;
