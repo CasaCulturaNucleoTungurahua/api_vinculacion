@@ -51,12 +51,12 @@ public class ArtworkController {
         return ResponseEntity.ok(artworkService.findByKeyword(keyword));
     }
 
-    @PostMapping(value = "/selected")
+    @PostMapping(value = "/featured")
     public ResponseEntity<List<Artwork>> saveSelected(@RequestBody List<Artwork> artworks){
         return ResponseEntity.ok(artworkService.saveFavouritesArtworks(artworks));
     }
 
-    @GetMapping(value = "/selected")
+    @GetMapping(value = "/featured")
     public ResponseEntity<List<Artwork>> getSelected(){
         return ResponseEntity.ok(artworkService.findAllFavourites());
     }

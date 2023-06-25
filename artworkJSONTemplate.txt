@@ -1,0 +1,39 @@
+
+{
+  "code": "T.4.4-9.0066-1",
+  "other_code": "33-1.2.022.12.064",
+  "name": "Caballos Briosos",
+  "centuryYear": "XX",
+  "deliveryType": "FIRMADO",
+  "signatureLocation": "Inferior derecha",
+  "country": "Ecuador- Azuay- Cuenca",
+  "technique": "Tinta y lápices de colores",
+  "support": "Cartulina",
+  "conservationState": "BUENO",
+  "integrityState": "COMPLETO",
+  "incomeForm": "Compra",
+  "incomePrice": 46.80,
+  "incomeYear": 1996,
+  "value": 0.00,
+  "pieceHeight": 50.00,
+  "pieceWidth": 36.00,
+  "pieceDeep": 0.00,
+  "gravingHeight": 0.00,
+  "gravingWidth": 0.00,
+  "frameElementHeight": 66.00,
+  "frameElementWidth": 52.00,
+  "imageWordpressURL": "https://culturatungurahua.com/wp-content/uploads/2022/12/cuadro-21.gif",
+  "observation": "firma \"Boseto Nº 4\" \"R.Pino.A.\" superior izquierda \"33\" superior centro: \"1.2.022.12.064\" \"Caballos briosos\" \"R.Pino\"",
+  "location": "Sala de Exposición Permanente",
+  "recordedBy": "Martha Molina Gómez,Servidor Público de Apoyo 1 , Museo",
+  "reviewedBy": "Juan Luis Sigüenza, Conservador de Museos, CCE",
+  "registeredDate": "",
+  "author": 
+    {
+    "id": 3,
+    "fullName": "Rómulo Pino Alvear",
+  "address": "",
+  "bibliography": ""
+
+  }
+}
