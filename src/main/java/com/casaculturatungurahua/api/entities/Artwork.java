@@ -47,12 +47,16 @@ public class Artwork {
     private Double frameElementWidth;
     //OTRA INFORMACION
     private String imageURL;
+    private String imageWordpressURL;
+    @Column(columnDefinition = "TEXT")
     private String observation;
+    @Column(columnDefinition = "TEXT")
+    private String description;
     private String location;
     private String recordedBy;
     private String reviewedBy;
     private LocalDate registeredDate;
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.REMOVE, CascadeType.DETACH})
     private Author author;
 
 }

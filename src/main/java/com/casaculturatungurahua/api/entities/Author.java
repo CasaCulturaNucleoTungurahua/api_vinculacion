@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -19,8 +20,10 @@ public class Author {
     @Column (unique = true)
     private String fullName;
     private String address;
+    @Column(columnDefinition = "TEXT")
     private String bibliography;
     @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Artwork> artworks;
+    @OneToMany( mappedBy = "author")
+    private List<Artwork> artworks = new ArrayList<>();
 }
+

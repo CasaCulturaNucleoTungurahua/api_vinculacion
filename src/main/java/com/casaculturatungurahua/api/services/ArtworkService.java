@@ -1,12 +1,22 @@
 package com.casaculturatungurahua.api.services;
 
 import com.casaculturatungurahua.api.entities.Artwork;
+import com.casaculturatungurahua.api.entities.Author;
+import com.casaculturatungurahua.api.entities.Favorites;
 import com.casaculturatungurahua.api.repository.ArtworkRepository;
 import com.casaculturatungurahua.api.repository.AuthorRepository;
+import com.casaculturatungurahua.api.repository.FavoritesRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @Transactional
@@ -14,18 +24,26 @@ public class ArtworkService {
     private final ArtworkRepository artworkRepository;
     private final AuthorRepository authorRepository;
 
+    private final FavoritesRepository favoritesRepository;
 
-    public ArtworkService(ArtworkRepository artworkRepository, AuthorRepository authorRepository) {
+
+    public ArtworkService(ArtworkRepository artworkRepository, AuthorRepository authorRepository, FavoritesRepository favoritesRepository) {
         this.artworkRepository = artworkRepository;
         this.authorRepository = authorRepository;
+        this.favoritesRepository = favoritesRepository;
     }
 
-    public Artwork save(Artwork artwork){
+    public Artwork save(Artwork artwork, MultipartFile image) throws IOException {
+        Author author = authorRepository.findById(artwork.getAuthor().getId()).orElseThrow();
+        artwork.setAuthor(null);
+        author.getArtworks().add(artwork);
+        artwork.setAuthor(author);
+        saveImage(artwork, image);
         return artworkRepository.save(artwork);
     }
 
-    public Artwork update(Long id,Artwork artwork){
-        Artwork artworkToUpdate = artworkRepository.findById(id).orElseThrow(()-> new RuntimeException("La obra de arte no existe"));
+    public Artwork update(String code, Artwork artwork, MultipartFile image) throws IOException {
+        Artwork artworkToUpdate = artworkRepository.findById(code).orElseThrow(() -> new RuntimeException("La obra de arte no existe"));
         artworkToUpdate.setCode(artwork.getCode());
         artworkToUpdate.setOther_code(artwork.getOther_code());
         artworkToUpdate.setName(artwork.getName());
@@ -48,7 +66,10 @@ public class ArtworkService {
         artworkToUpdate.setGravingWidth(artwork.getGravingWidth());
         artworkToUpdate.setFrameElementHeight(artwork.getFrameElementHeight());
         artworkToUpdate.setFrameElementWidth(artwork.getFrameElementWidth());
-        artworkToUpdate.setImageURL(artwork.getImageURL());
+        if (Objects.nonNull(image)){
+            saveImage(artworkToUpdate, image);
+        }
+        artworkToUpdate.setImageWordpressURL(artwork.getImageWordpressURL());
         artworkToUpdate.setObservation(artwork.getObservation());
         artworkToUpdate.setLocation(artwork.getLocation());
         artworkToUpdate.setRecordedBy(artwork.getRecordedBy());
@@ -57,19 +78,46 @@ public class ArtworkService {
         return artworkRepository.save(artworkToUpdate);
     }
 
-    public Boolean delete(Long id){
-        if(artworkRepository.existsById(id)){
-            artworkRepository.deleteById(id);
+    private void saveImage(Artwork artwork, MultipartFile image) throws IOException {
+        String[] extension = Objects.requireNonNull(image.getOriginalFilename()).split("\\.");
+        String artworkFileName = artwork.getCode() + "." + extension[1];
+        Path imageStorage = Paths.get("images").toAbsolutePath().normalize().resolve(artworkFileName);
+        Files.copy(image.getInputStream(), imageStorage, StandardCopyOption.REPLACE_EXISTING);
+        artwork.setImageURL("/casa-cultura-tungurahua/api/v1/images/"+artworkFileName);
+    }
+
+    public Boolean delete(String code) throws IOException {
+        if (artworkRepository.existsById(code)) {
+            String[] name =  artworkRepository.findById(code).get().getImageURL().split("/");
+            Path imageStorage = Paths.get("images").toAbsolutePath().normalize().resolve(name[name.length -1]);
+            Files.deleteIfExists(imageStorage);
+            artworkRepository.deleteById(code);
             return true;
         }
         return false;
     }
 
-    public List<Artwork> findAll(){
+    public List<Artwork> findAll() {
         return artworkRepository.findAll();
     }
 
-    public Artwork findById(Long id){
-        return artworkRepository.findById(id).orElseThrow(()-> new RuntimeException("No existe la obra de arte"));
+    public Artwork findById(String id) {
+        Artwork artwork = artworkRepository.findById(id).orElseThrow(() -> new RuntimeException("No existe la obra de arte"));
+        return artwork;
+    }
+
+    public List<Artwork> findByKeyword(String keyword){
+        return artworkRepository.findAllByNameOrAuthorName(keyword);
+    }
+
+    public List<Artwork> findAllFavourites(){
+        Favorites fav = favoritesRepository.findById(1L).orElseThrow();
+        return fav.getArtworks();
+    }
+
+    public List<Artwork> saveFavouritesArtworks(List<Artwork> artworks){
+        Favorites fav = new Favorites(1L, artworks);
+        fav = favoritesRepository.save(fav);
+        return fav.getArtworks();
     }
 }
