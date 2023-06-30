@@ -35,8 +35,6 @@ public class ArtworkService {
 
     public Artwork save(Artwork artwork, MultipartFile image) throws IOException {
         Author author = authorRepository.findById(artwork.getAuthor().getId()).orElseThrow();
-        artwork.setAuthor(null);
-        author.getArtworks().add(artwork);
         artwork.setAuthor(author);
         saveImage(artwork, image);
         return artworkRepository.save(artwork);

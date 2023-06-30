@@ -23,7 +23,7 @@ public class Author {
     @Column(columnDefinition = "TEXT")
     private String bibliography;
     @JsonIgnore
-    @OneToMany( mappedBy = "author")
+    @OneToMany( mappedBy = "author", orphanRemoval = true , cascade = CascadeType.ALL)
     private List<Artwork> artworks = new ArrayList<>();
 }
 

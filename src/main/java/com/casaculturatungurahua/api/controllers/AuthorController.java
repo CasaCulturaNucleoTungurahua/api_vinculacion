@@ -35,7 +35,7 @@ public class AuthorController {
         return ResponseEntity.ok(authorService.update(id, author));
     }
 
-    @DeleteMapping
+    @DeleteMapping(value = "/{id}")
     public ResponseEntity<Map<String,String>> delete(@PathVariable final Long id){
         Map<String, String> response = new HashMap<>();
         String message = authorService.delete(id) ? "Autor eliminado exitosamente" : "Error al eliminar el autor";

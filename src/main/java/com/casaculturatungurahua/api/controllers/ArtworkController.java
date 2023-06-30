@@ -26,12 +26,12 @@ public class ArtworkController {
         return ResponseEntity.ok(artworkService.save(artwork, image));
     }
 
-    @PutMapping(value = "{code}")
+    @PutMapping(value = "/{code}")
     public ResponseEntity<Artwork> update(@PathVariable final String code, @RequestPart("artwork") final Artwork artwork, @RequestPart("image") MultipartFile image) throws IOException {
         return ResponseEntity.ok(artworkService.update(code, artwork, image));
     }
 
-    @DeleteMapping(value = "{code}")
+    @DeleteMapping(value = "/{code}")
     public ResponseEntity<Boolean> delete(@PathVariable final String code) throws IOException {
         return ResponseEntity.ok(artworkService.delete(code));
     }
@@ -41,7 +41,7 @@ public class ArtworkController {
         return ResponseEntity.ok(artworkService.findAll());
     }
 
-    @GetMapping(value = "{code}")
+    @GetMapping(value = "/{code}")
     public ResponseEntity<Artwork> findById(@PathVariable final String code){
         return ResponseEntity.ok(artworkService.findById(code));
     }

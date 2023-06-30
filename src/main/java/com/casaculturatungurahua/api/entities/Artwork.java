@@ -3,6 +3,7 @@ package com.casaculturatungurahua.api.entities;
 import com.casaculturatungurahua.api.util.ConservationState;
 import com.casaculturatungurahua.api.util.DeliveryType;
 import com.casaculturatungurahua.api.util.IntegrityState;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -56,7 +57,12 @@ public class Artwork {
     private String recordedBy;
     private String reviewedBy;
     private LocalDate registeredDate;
-    @ManyToOne(cascade = {CascadeType.REMOVE, CascadeType.DETACH})
+    @ManyToOne
     private Author author;
+    @ManyToOne (cascade = CascadeType.ALL)
+    private Favorites favorites;
+
+
+
 
 }
