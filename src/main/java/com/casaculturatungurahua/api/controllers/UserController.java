@@ -1,6 +1,6 @@
 package com.casaculturatungurahua.api.controllers;
 
-import com.casaculturatungurahua.api.entities.User;
+import com.casaculturatungurahua.api.entities.MainUser;
 import com.casaculturatungurahua.api.security.jwt.JWTProvider;
 import com.casaculturatungurahua.api.security.jwt.JWTResponse;
 import com.casaculturatungurahua.api.security.model.UserPrincipal;
@@ -27,7 +27,7 @@ public class UserController {
     }
 
     @PostMapping(value = "/login")
-    public ResponseEntity<JWTResponse> login(@RequestBody User user){
+    public ResponseEntity<JWTResponse> login(@RequestBody MainUser user){
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtProvider.generateToken(authentication);
