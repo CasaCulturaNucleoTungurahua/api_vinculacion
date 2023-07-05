@@ -1,9 +1,8 @@
 FROM maven:3.6.3-openjdk-17-slim AS build
 COPY . .
-RUN mvn clean package -Pprod -DskipTests
+RUN mvn clean package install -Pprod -DskipTests
 
 FROM openjdk:17-alpine
-VOLUME /tmp
-ARG JAR_FILE=target/API-0.0.1-SNAPSHOT.jar
-COPY ${JAR_FILE} app.jar
+COPY --from=build target/API-0.0.1-SNAPSHOT.jar app.jar
+EXPOSE 8080
 ENTRYPOINT ["java","-jar","/app.jar"]
