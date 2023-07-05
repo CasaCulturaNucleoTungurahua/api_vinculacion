@@ -22,12 +22,12 @@ public class ArtworkController {
     }
 
     @PostMapping
-    public ResponseEntity<Artwork> save(@RequestPart("artwork") final Artwork artwork, @RequestPart("image") MultipartFile image) throws IOException {
+    public ResponseEntity<Artwork> save(@RequestPart("artwork") final Artwork artwork, @RequestPart(value = "image", required = false) MultipartFile image) throws IOException {
         return ResponseEntity.ok(artworkService.save(artwork, image));
     }
 
     @PutMapping(value = "/{code}")
-    public ResponseEntity<Artwork> update(@PathVariable final String code, @RequestPart("artwork") final Artwork artwork, @RequestPart("image") MultipartFile image) throws IOException {
+    public ResponseEntity<Artwork> update(@PathVariable final String code, @RequestPart(value = "artwork") final Artwork artwork, @RequestPart(value = "image" , required = false) MultipartFile image) throws IOException {
         return ResponseEntity.ok(artworkService.update(code, artwork, image));
     }
 

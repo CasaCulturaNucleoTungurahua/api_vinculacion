@@ -36,7 +36,8 @@ public class ArtworkService {
     public Artwork save(Artwork artwork, MultipartFile image) throws IOException {
         Author author = authorRepository.findById(artwork.getAuthor().getId()).orElseThrow();
         artwork.setAuthor(author);
-        saveImage(artwork, image);
+        if(Objects.nonNull(image))
+            saveImage(artwork, image);
         return artworkRepository.save(artwork);
     }
 
@@ -72,6 +73,7 @@ public class ArtworkService {
         artworkToUpdate.setLocation(artwork.getLocation());
         artworkToUpdate.setRecordedBy(artwork.getRecordedBy());
         artworkToUpdate.setReviewedBy(artwork.getReviewedBy());
+        artworkToUpdate.setRegisteredDate(artwork.getRegisteredDate());
         artworkToUpdate.setAuthor(artwork.getAuthor());
         return artworkRepository.save(artworkToUpdate);
     }
@@ -86,9 +88,9 @@ public class ArtworkService {
 
     public Boolean delete(String code) throws IOException {
         if (artworkRepository.existsById(code)) {
-            String[] name =  artworkRepository.findById(code).get().getImageURL().split("/");
+            /*String[] name =  artworkRepository.findById(code).get().getImageURL().split("/");
             Path imageStorage = Paths.get("images").toAbsolutePath().normalize().resolve(name[name.length -1]);
-            Files.deleteIfExists(imageStorage);
+            Files.deleteIfExists(imageStorage);*/
             artworkRepository.deleteById(code);
             return true;
         }
@@ -109,12 +111,19 @@ public class ArtworkService {
     }
 
     public List<Artwork> findAllFavourites(){
-        Favorites fav = favoritesRepository.findById(1L).orElseThrow();
+        Favorites fav = favoritesRepository.findById(1L).orElse(new Favorites());
         return fav.getArtworks();
     }
 
     public List<Artwork> saveFavouritesArtworks(List<Artwork> artworks){
-        Favorites fav = new Favorites(1L, artworks);
+        if(favoritesRepository.existsById(1L)){
+            favoritesRepository.deleteById(1L);
+        }
+        Favorites fav = new Favorites();
+        fav.setId(1L);
+        Favorites finalFav = fav;
+        List<Artwork> artworkList = artworks.stream().map(artwork -> artworkRepository.findById(artwork.getCode()).get()).toList();
+        fav.setArtworks(artworkList);
         fav = favoritesRepository.save(fav);
         return fav.getArtworks();
     }

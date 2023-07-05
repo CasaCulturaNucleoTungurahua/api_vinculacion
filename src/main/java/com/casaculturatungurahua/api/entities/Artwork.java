@@ -4,12 +4,17 @@ import com.casaculturatungurahua.api.util.ConservationState;
 import com.casaculturatungurahua.api.util.DeliveryType;
 import com.casaculturatungurahua.api.util.IntegrityState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.annotation.PreDestroy;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 
 @Data
@@ -59,10 +64,17 @@ public class Artwork {
     private LocalDate registeredDate;
     @ManyToOne
     private Author author;
-    @ManyToOne (cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.REMOVE)
+    @JoinTable(name = "favorites_artworks",
+            joinColumns = @JoinColumn(name = "artworks_code"),
+            inverseJoinColumns = @JoinColumn(name = "favorites_id"))
     private Favorites favorites;
 
-
-
+    @PreRemove
+    public void preRemove() throws IOException {
+        String[] name =  imageURL.split("/");
+        Path imageStorage = Paths.get("images").toAbsolutePath().normalize().resolve(name[name.length -1]);
+        Files.deleteIfExists(imageStorage);
+    }
 
 }

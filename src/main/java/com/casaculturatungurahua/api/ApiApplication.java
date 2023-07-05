@@ -1,5 +1,6 @@
 package com.casaculturatungurahua.api;
 
+import com.casaculturatungurahua.api.entities.Favorites;
 import com.casaculturatungurahua.api.entities.User;
 import com.casaculturatungurahua.api.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
