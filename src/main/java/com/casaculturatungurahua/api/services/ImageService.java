@@ -12,7 +12,7 @@ import java.nio.file.Paths;
 public class ImageService {
 
     public byte[] downloadImage(String imageName) throws IOException {
-        Path imageFolder = Paths.get("images").toAbsolutePath().normalize();
+        Path imageFolder = Paths.get("home").toAbsolutePath().normalize();
         if(!Files.exists(imageFolder)){
             try {
                 Files.createDirectories(imageFolder);

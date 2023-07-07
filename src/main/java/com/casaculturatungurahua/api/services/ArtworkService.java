@@ -81,7 +81,7 @@ public class ArtworkService {
     private void saveImage(Artwork artwork, MultipartFile image) throws IOException {
         String[] extension = Objects.requireNonNull(image.getOriginalFilename()).split("\\.");
         String artworkFileName = artwork.getCode() + "." + extension[1];
-        Path imageFolder = Paths.get("images").toAbsolutePath().normalize();
+        Path imageFolder = Paths.get("home").toAbsolutePath().normalize();
         Path imageStorage = imageFolder.resolve(artworkFileName);
         if(!Files.exists(imageFolder)){
             try {
