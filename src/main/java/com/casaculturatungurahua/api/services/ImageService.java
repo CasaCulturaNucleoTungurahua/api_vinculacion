@@ -17,7 +17,8 @@ public class ImageService {
     }
 
     public byte[] downloadImage(String imageName) {
-        String code = imageName.split("\\.")[0];
+        int lastDotIndex = imageName.lastIndexOf(".");
+        String code = imageName.substring(0, lastDotIndex);
         Artwork artwork = artworkRepository.findById(code).orElseThrow(() -> new RuntimeException("La obra de arte no existe"));
         return ImageUtils.decompressImage(artwork.getImage());
     }

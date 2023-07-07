@@ -9,6 +9,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Type;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -54,7 +55,6 @@ public class Artwork {
     //OTRA INFORMACION
     private String imageURL;
     @JsonIgnore
-    @Lob
     private byte[] image;
     private String imageWordpressURL;
     @Column(columnDefinition = "TEXT")
