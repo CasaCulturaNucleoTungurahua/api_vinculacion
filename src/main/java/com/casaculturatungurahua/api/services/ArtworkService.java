@@ -81,7 +81,16 @@ public class ArtworkService {
     private void saveImage(Artwork artwork, MultipartFile image) throws IOException {
         String[] extension = Objects.requireNonNull(image.getOriginalFilename()).split("\\.");
         String artworkFileName = artwork.getCode() + "." + extension[1];
-        Path imageStorage = Paths.get("images").toAbsolutePath().normalize().resolve(artworkFileName);
+        Path imageFolder = Paths.get("images").toAbsolutePath().normalize();
+        Path imageStorage = imageFolder.resolve(artworkFileName);
+        if(!Files.exists(imageFolder)){
+            try {
+                Files.createDirectories(imageStorage);
+            } catch (Exception e) {
+                throw new RuntimeException("Error al crear el directorio para guardar la imagen");
+            }
+        }
+        System.out.println(imageStorage);
         Files.copy(image.getInputStream(), imageStorage, StandardCopyOption.REPLACE_EXISTING);
         artwork.setImageURL("/casa-cultura-tungurahua/api/v1/images/"+artworkFileName);
     }
