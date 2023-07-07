@@ -85,10 +85,13 @@ public class ArtworkService {
         Path imageStorage = imageFolder.resolve(artworkFileName);
         if(!Files.exists(imageFolder)){
             try {
-                Files.createDirectories(imageStorage);
+                Files.createDirectories(imageFolder);
+                System.out.println("Directorio creado");
             } catch (Exception e) {
                 throw new RuntimeException("Error al crear el directorio para guardar la imagen");
             }
+        }else{
+            System.out.println("El directorio ya existe");
         }
         System.out.println(imageStorage);
         Files.copy(image.getInputStream(), imageStorage, StandardCopyOption.REPLACE_EXISTING);

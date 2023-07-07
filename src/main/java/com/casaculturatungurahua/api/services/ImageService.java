@@ -12,7 +12,18 @@ import java.nio.file.Paths;
 public class ImageService {
 
     public byte[] downloadImage(String imageName) throws IOException {
-        Path imageStorage = Paths.get("images").toAbsolutePath().normalize().resolve(imageName);
+        Path imageFolder = Paths.get("images").toAbsolutePath().normalize();
+        if(!Files.exists(imageFolder)){
+            try {
+                Files.createDirectories(imageFolder);
+                System.out.println("Directorio creado");
+            } catch (Exception e) {
+                throw new RuntimeException("Error al crear el directorio para guardar la imagen");
+            }
+        }else{
+            System.out.println("El directorio ya existe");
+        }
+        Path imageStorage = imageFolder.resolve(imageName);
         return Files.readAllBytes(new File(imageStorage.toUri()).toPath());
     }
 }
