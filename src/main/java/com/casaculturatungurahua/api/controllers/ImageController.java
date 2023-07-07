@@ -18,7 +18,7 @@ public class ImageController {
     @Autowired
     private ImageService imageService;
 
-    @GetMapping(value = "{imageName}", produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_GIF_VALUE})
+    @GetMapping(value = "{imageName}", produces = {MediaType.IMAGE_JPEG_VALUE})
     public byte[] downloadImage(@PathVariable String imageName) throws IOException {
         return imageService.downloadImage(imageName);
     }

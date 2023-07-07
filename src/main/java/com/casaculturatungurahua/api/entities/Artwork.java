@@ -53,6 +53,9 @@ public class Artwork {
     private Double frameElementWidth;
     //OTRA INFORMACION
     private String imageURL;
+    @JsonIgnore
+    @Lob
+    private byte[] image;
     private String imageWordpressURL;
     @Column(columnDefinition = "TEXT")
     private String observation;
@@ -70,11 +73,11 @@ public class Artwork {
             inverseJoinColumns = @JoinColumn(name = "favorites_id"))
     private Favorites favorites;
 
-    @PreRemove
+    /*@PreRemove
     public void preRemove() throws IOException {
         String[] name =  imageURL.split("/");
         Path imageStorage = Paths.get("images").toAbsolutePath().normalize().resolve(name[name.length -1]);
         Files.deleteIfExists(imageStorage);
-    }
+    }*/
 
 }

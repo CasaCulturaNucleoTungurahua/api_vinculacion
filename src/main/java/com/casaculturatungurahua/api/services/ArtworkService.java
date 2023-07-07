@@ -6,6 +6,7 @@ import com.casaculturatungurahua.api.entities.Favorites;
 import com.casaculturatungurahua.api.repository.ArtworkRepository;
 import com.casaculturatungurahua.api.repository.AuthorRepository;
 import com.casaculturatungurahua.api.repository.FavoritesRepository;
+import com.casaculturatungurahua.api.util.ImageUtils;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -79,22 +80,9 @@ public class ArtworkService {
     }
 
     private void saveImage(Artwork artwork, MultipartFile image) throws IOException {
-        String[] extension = Objects.requireNonNull(image.getOriginalFilename()).split("\\.");
-        String artworkFileName = artwork.getCode() + "." + extension[1];
-        Path imageFolder = Paths.get("home").toAbsolutePath().normalize();
-        Path imageStorage = imageFolder.resolve(artworkFileName);
-        if(!Files.exists(imageFolder)){
-            try {
-                Files.createDirectories(imageFolder);
-                System.out.println("Directorio creado");
-            } catch (Exception e) {
-                throw new RuntimeException("Error al crear el directorio para guardar la imagen");
-            }
-        }else{
-            System.out.println("El directorio ya existe");
-        }
-        System.out.println(imageStorage);
-        Files.copy(image.getInputStream(), imageStorage, StandardCopyOption.REPLACE_EXISTING);
+        /*String[] extension = Objects.requireNonNull(image.getOriginalFilename()).split("\\.");*/
+        String artworkFileName = artwork.getCode()+ ".jpg";
+        artwork.setImage(ImageUtils.compressImage(image.getBytes()));
         artwork.setImageURL("/casa-cultura-tungurahua/api/v1/images/"+artworkFileName);
     }
 
