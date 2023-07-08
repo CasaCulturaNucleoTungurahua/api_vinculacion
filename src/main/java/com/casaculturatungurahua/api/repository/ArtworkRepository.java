@@ -9,6 +9,9 @@ import java.util.List;
 
 public interface ArtworkRepository extends JpaRepository<Artwork, String> {
 
-    @Query("select a from  Artwork a join Author  au where a.name like %:keyword% or au.fullName like %:keyword%")
-    List<Artwork> findAllByNameOrAuthorName(@Param("keyword") String keyword);
+    /*@Query("select a from  Artwork a join Author  au where a.name like %:keyword% or au.fullName like %:keyword%")
+    List<Artwork> findAllByNameOrAuthorName(@Param("keyword") String keyword);*/
+
+    List<Artwork> findByNameIgnoreCaseOrAuthorFullNameIgnoreCase(String name, String authorFullName);
+    List<Artwork> findByNameIgnoreCaseContainingOrAuthorFullNameIgnoreCaseContaining(String name, String authorFullName);
 }

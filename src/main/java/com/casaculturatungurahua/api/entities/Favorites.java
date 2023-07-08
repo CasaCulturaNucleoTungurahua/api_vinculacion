@@ -17,7 +17,7 @@ import java.util.List;
 public class Favorites {
     @Id
     private Long id;
-    @OneToMany
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JsonIgnore
     private List<Artwork> artworks = new ArrayList<>();
 

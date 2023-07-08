@@ -17,9 +17,11 @@ public class ImageService {
     }
 
     public byte[] downloadImage(String imageName) {
+        if(imageName == null) return null;
         int lastDotIndex = imageName.lastIndexOf(".");
         String code = imageName.substring(0, lastDotIndex);
-        Artwork artwork = artworkRepository.findById(code).orElseThrow(() -> new RuntimeException("La obra de arte no existe"));
+        Artwork artwork = artworkRepository.findById(code).orElseThrow(() -> new RuntimeException("La obra de arte no existe " + code));
+        if(artwork.getImage() == null) return null;
         return ImageUtils.decompressImage(artwork.getImage());
     }
 }

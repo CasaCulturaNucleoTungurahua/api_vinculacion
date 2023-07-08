@@ -16,6 +16,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -107,7 +108,7 @@ public class ArtworkService {
     }
 
     public List<Artwork> findByKeyword(String keyword){
-        return artworkRepository.findAllByNameOrAuthorName(keyword);
+        return artworkRepository.findByNameIgnoreCaseContainingOrAuthorFullNameIgnoreCaseContaining(keyword,keyword);
     }
 
     public List<Artwork> findAllFavourites(){
@@ -116,12 +117,14 @@ public class ArtworkService {
     }
 
     public List<Artwork> saveFavouritesArtworks(List<Artwork> artworks){
+        Favorites fav;
         if(favoritesRepository.existsById(1L)){
-            favoritesRepository.deleteById(1L);
+            fav = favoritesRepository.findById(1L).get();
+            fav.setArtworks(new ArrayList<>());
+            fav = favoritesRepository.save(fav);
         }
-        Favorites fav = new Favorites();
+        fav = new Favorites();
         fav.setId(1L);
-        Favorites finalFav = fav;
         List<Artwork> artworkList = artworks.stream().map(artwork -> artworkRepository.findById(artwork.getCode()).get()).toList();
         fav.setArtworks(artworkList);
         fav = favoritesRepository.save(fav);
