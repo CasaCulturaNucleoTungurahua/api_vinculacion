@@ -50,6 +50,10 @@ public class ArtworkController {
     public ResponseEntity<List<Artwork>> findByKeyword(@PathVariable final String keyword){
         return ResponseEntity.ok(artworkService.findByKeyword(keyword));
     }
+    @GetMapping(value = "/search")
+    public ResponseEntity<List<Artwork>> findByKeyword(){
+        return ResponseEntity.ok(artworkService.findAll());
+    }
 
     @PostMapping(value = "/featured")
     public ResponseEntity<List<Artwork>> saveSelected(@RequestBody List<Artwork> artworks){
